@@ -26,16 +26,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.djaytan.mc</groupId>
-    <artifactId>mc-spring-plugin-template</artifactId>
+    <groupId>fr.cosmageia.plugin</groupId>
+    <artifactId>root</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Minecraft Spring Plugin Template</name>
-    <description>Minecraft plugin template based on Spring framework</description>
+    <name>Cosmageïa Plugin</name>
+    <description>The Minecraft Cosmageïa plugin</description>
+
     <modules>
-        <module>template-core</module>
-        <module>template-plugin</module>
+        <module>cosmageia-core</module>
+        <module>papermc-plugin</module>
     </modules>
 
     <properties>
@@ -48,7 +49,7 @@
 
         <!-- ==================== Sonar ==================== -->
         <!-- sonar.projectKey must be defined through CLI only -->
-        <sonar.organization>djaytan</sonar.organization>
+        <sonar.organization>cosmageia</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/**/target/site/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 
@@ -62,7 +63,7 @@
             <!-- Internal dependencies -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>template-core</artifactId>
+                <artifactId>cosmageia-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -91,11 +92,6 @@
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>2.2</version>
-            </dependency>
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>2.2.220</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -151,7 +147,6 @@
                 <version>3.3.0</version>
                 <configuration>
                     <!-- General properties -->
-                    <verifyFail>warn</verifyFail>
                     <createBackupFile>false</createBackupFile>
 
                     <!-- Formatting properties -->
@@ -205,8 +200,7 @@
                                 <exclude>src/test/resources/**</exclude>
                                 <exclude>**/dir.empty</exclude>
                                 <exclude>.editorconfig</exclude>
-                                <exclude>jitpack.yml</exclude>
-                                <exclude>renovate.json5</exclude>
+                                <exclude>renovate.json</exclude>
                             </excludes>
                         </licenseSet>
                     </licenseSets>
@@ -240,9 +234,6 @@
                 <groupId>com.spotify.fmt</groupId>
                 <artifactId>fmt-maven-plugin</artifactId>
                 <version>2.20</version>
-                <configuration>
-                    <failOnError>false</failOnError>
-                </configuration>
                 <executions>
                     <execution>
                         <id>format-code</id>
@@ -446,7 +437,7 @@
         </plugins>
     </build>
 
-    <url>https://github.com/Djaytan/mc-spring-plugin-template</url>
+    <url>https://github.com/Cosmageia/cosmageia-plugin</url>
     <inceptionYear>2023</inceptionYear>
 
     <licenses>
@@ -459,7 +450,7 @@
     <scm>
         <connection>scm:git:${project.scm.url}</connection>
         <developerConnection>scm:git:${project.scm.url}</developerConnection>
-        <url>git@github.com:Djaytan/mc-spring-plugin-template.git</url>
+        <url>git@github.com:Cosmageia/cosmageia-plugin.git</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -472,63 +463,56 @@
 
     <profiles>
         <profile>
-            <id>local-dev</id>
+            <id>localdev</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <fmt.skipFormat>false</fmt.skipFormat>
-                <fmt.skipCheck>true</fmt.skipCheck>
-                <license.skipFormat>false</license.skipFormat>
-                <license.skipCheck>true</license.skipCheck>
-                <sortpom.skipSort>false</sortpom.skipSort>
-                <sortpom.skipCheck>true</sortpom.skipCheck>
-                <skipTests>false</skipTests>
-                <dependencyCheck.skip>false</dependencyCheck.skip>
                 <attachSources.skip>false</attachSources.skip>
-                <javadoc.skip>false</javadoc.skip>
+                <dependencyCheck.skip>false</dependencyCheck.skip>
                 <enforcer.skip>false</enforcer.skip>
-                <docker.skip>true</docker.skip>
+                <fmt.skipCheck>true</fmt.skipCheck>
+                <fmt.skipFormat>false</fmt.skipFormat>
+                <javadoc.skip>false</javadoc.skip>
+                <license.skipCheck>true</license.skipCheck>
+                <license.skipFormat>false</license.skipFormat>
+                <skipTests>false</skipTests>
+                <sortpom.skipCheck>true</sortpom.skipCheck>
+                <sortpom.skipSort>false</sortpom.skipSort>
             </properties>
         </profile>
         <profile>
             <id>continuous-integration</id>
             <properties>
-                <fmt.skipFormat>true</fmt.skipFormat>
-                <fmt.skipCheck>false</fmt.skipCheck>
-                <license.skipFormat>true</license.skipFormat>
-                <license.skipCheck>false</license.skipCheck>
-                <sortpom.skipSort>true</sortpom.skipSort>
-                <sortpom.skipCheck>false</sortpom.skipCheck>
-                <skipTests>false</skipTests>
-                <dependencyCheck.skip>false</dependencyCheck.skip>
                 <attachSources.skip>false</attachSources.skip>
-                <javadoc.skip>false</javadoc.skip>
+                <dependencyCheck.skip>false</dependencyCheck.skip>
                 <enforcer.skip>false</enforcer.skip>
-                <docker.skip>true</docker.skip>
+                <fmt.skipCheck>false</fmt.skipCheck>
+                <fmt.skipFormat>true</fmt.skipFormat>
+                <javadoc.skip>false</javadoc.skip>
+                <license.skipCheck>false</license.skipCheck>
+                <license.skipFormat>true</license.skipFormat>
+                <skipTests>false</skipTests>
+                <sortpom.skipCheck>false</sortpom.skipCheck>
+                <sortpom.skipSort>true</sortpom.skipSort>
             </properties>
         </profile>
         <profile>
             <id>fast</id>
             <properties>
-                <fmt.skipFormat>true</fmt.skipFormat>
-                <fmt.skipCheck>true</fmt.skipCheck>
-                <license.skipFormat>true</license.skipFormat>
-                <license.skipCheck>true</license.skipCheck>
-                <sortpom.skipSort>true</sortpom.skipSort>
-                <sortpom.skipCheck>true</sortpom.skipCheck>
-                <skipTests>true</skipTests>
-                <dependencyCheck.skip>true</dependencyCheck.skip>
+                <maven.test.skip.exec>true</maven.test.skip.exec>
+
                 <attachSources.skip>true</attachSources.skip>
-                <javadoc.skip>true</javadoc.skip>
+                <dependencyCheck.skip>true</dependencyCheck.skip>
                 <enforcer.skip>true</enforcer.skip>
-                <docker.skip>true</docker.skip>
-            </properties>
-        </profile>
-        <profile>
-            <id>docker</id>
-            <properties>
-                <docker.skip>false</docker.skip>
+                <fmt.skipCheck>true</fmt.skipCheck>
+                <fmt.skipFormat>true</fmt.skipFormat>
+                <javadoc.skip>true</javadoc.skip>
+                <license.skipCheck>true</license.skipCheck>
+                <license.skipFormat>true</license.skipFormat>
+                <skipTests>true</skipTests>
+                <sortpom.skipCheck>true</sortpom.skipCheck>
+                <sortpom.skipSort>true</sortpom.skipSort>
             </properties>
         </profile>
     </profiles>
